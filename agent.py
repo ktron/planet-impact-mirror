@@ -6,11 +6,7 @@ import requests
 from openai.agents import Tool, create_openai_functions_agent
 from openai.responses import ChatResponse
 
-<<<<<<< HEAD
-openai.api_key = os.getenv("OPENAI_API_KEY", "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")
-=======
 openai.api_key = os.getenv("OPENAI_API_KEY", "")
->>>>>>> dde48bc (`Refactor bot.py and agent.py to use OpenAI Responses API`)
 
 SYSTEM_PROMPT = """
 You are \"Planet Impact Mirror\" — a satirical ecological analyst bot.
