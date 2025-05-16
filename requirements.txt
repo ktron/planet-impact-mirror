@@ -1,0 +1,3 @@
+# planet_impact_mirror/requirements.txt
+streamlit
+openai
