@@ -3,3 +3,4 @@ streamlit
 openai
 requests
 openai[agents]
+openai-responses

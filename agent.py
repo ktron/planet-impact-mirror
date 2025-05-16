@@ -4,8 +4,13 @@ import random
 import os
 import requests
 from openai.agents import Tool, create_openai_functions_agent
+from openai.responses import ChatResponse
 
+<<<<<<< HEAD
 openai.api_key = os.getenv("OPENAI_API_KEY", "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")
+=======
+openai.api_key = os.getenv("OPENAI_API_KEY", "")
+>>>>>>> dde48bc (`Refactor bot.py and agent.py to use OpenAI Responses API`)
 
 SYSTEM_PROMPT = """
 You are \"Planet Impact Mirror\" — a satirical ecological analyst bot.
@@ -124,6 +129,7 @@ def get_yacht_tracking_info(yacht_id):
     except Exception as e:
         return f"Error fetching yacht tracking data: {str(e)}"
 
+<<<<<<< HEAD
 def satire_bot(user_input):
     # Basic heuristic to detect keywords for enriched data fetching
     user_input_lower = user_input.lower()
@@ -162,10 +168,44 @@ def satire_bot(user_input):
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_input},
             {"role": "assistant", "content": enriched_content}
+=======
+async def async_combined_agent(user_input: str) -> str:
+    # Define the WebSearchTool
+    web_search_tool = Tool(
+        name="WebSearch",
+        func=lambda q: bing_web_search(q),
+        description="Useful for answering questions about current events, industries, wealth, and emissions by searching the web."
+    )
+
+    # Facts agent using WebSearchTool and GPT-4o
+    facts_agent = create_openai_functions_agent(
+        tools=[web_search_tool],
+        llm=openai.ChatCompletion,
+        system_message="You are a factual assistant providing accurate and up-to-date information.",
+        temperature=0.7,
+        max_tokens=600
+    )
+
+    # Get factual information asynchronously
+    facts_response: ChatResponse = await facts_agent.invoke_async(user_input)
+
+    # Satire agent using GPT-4o
+    satire_prompt = SYSTEM_PROMPT + "\n\nFactual information:\n" + facts_response.text + "\n\nNow provide a satirical commentary based on the facts and the user input."
+
+    satire_response = await openai.ChatCompletion.acreate(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": satire_prompt},
+            {"role": "user", "content": user_input}
+>>>>>>> dde48bc (`Refactor bot.py and agent.py to use OpenAI Responses API`)
         ],
         temperature=0.7,
         max_tokens=600
     )
 
+<<<<<<< HEAD
     return response['choices'][0]['message']['content']
 
+=======
+    return satire_response.choices[0].message.content
+>>>>>>> dde48bc (`Refactor bot.py and agent.py to use OpenAI Responses API`)
